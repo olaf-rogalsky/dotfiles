@@ -1,0 +1,36 @@
+[user]
+	name = Olaf Rogalsky
+	email = olaf.rogalsky@gmail.com
+
+[push]
+	default = simple
+
+[alias]
+	co = checkout
+	cm = commit
+        br = branch
+        bl = branch --list
+        st = status
+        ss = stash show
+        sl = stash list
+
+[core]
+	excludesfile = /home/olaf/.gitignore_global
+
+[github]
+	user = olaf-rogalsky
+
+[delta]
+        side-by-side = true
+        syntax-theme = zenburn
+
+[init]
+	defaultBranch = main
+
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
