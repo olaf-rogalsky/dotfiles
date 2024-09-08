@@ -61,6 +61,10 @@ fi
 # Initialize bash completion.
 [ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
 
+# use git completion for my own dotcfg command
+source /usr/share/bash-completion/completions/git
+___git_complete dotcfg __git_main
+
 # enable colors
 colortty=true
 
