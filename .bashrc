@@ -44,7 +44,7 @@ shopt -s direxpand
 
 # MSYS2 / wsl related initializations
 export IS_MSYS=$(test "$OSTYPE" = "msys" && echo true || echo false)
-export IS_WSL=$([ -f "/proc/sys/fs/binfmt_misc/WSLInterop" ] && echo true || echo false)
+export IS_WSL=$(test -f "/proc/sys/fs/binfmt_misc/WSLInterop" && echo true || echo false)
 if $IS_MSYS || $IS_WSL; then
     [ -r "$MSYSTEM_PREFIX/etc/bash.bashrc" ] && source "$MSYSTEM_PREFIX/etc/bash.bashrc"
     [ -r "$HOME/.ssh-agent-env" ] && source "$HOME/.ssh-agent-env" # make sure, that SSH_AUTH_SOCK is set for ssh-add 
@@ -66,7 +66,7 @@ source /usr/share/bash-completion/completions/git
 ___git_complete dotcfg __git_main
 
 # enable colors
-colortty=true
+colortty="$(tput colors >/dev/null 2>&1 && echo true || echo false)"
 
 if $colortty; then
     sgr0="$(tput sgr0)"
@@ -146,15 +146,16 @@ fi
 
 test -s /etc/profile.d/autojump.sh && source /etc/profile.d/autojump.sh
 
-# wezterm integration
-if [ "$TERM_PROGRAM" = "WezTerm" ]; then
-    # tell wezterm the current PWD
-    PS1="\[\e]7;file://\h\$PWD\e\\\\\\]$PS1"
-    # semantic zone
-    PS0="\e]133;C\a"
-    PS1="\[\e]133;P;k=i\a\]$PS1\[\e]133;B\a\]"
-    PS2="\[\e]133;P;k=s\a\]$PS2\[\e]133;B\a\]"
-fi
+# terminal specific
+case "$TERM" in
+    wezterm)
+        # tell wezterm the current PWD
+        PS1="\[\e]7;file://\h\$PWD\e\\\\\\]$PS1"
+        # semantic zone
+        PS0="\e]133;C\a"
+        PS1="\[\e]133;P;k=i\a\]$PS1\[\e]133;B\a\]"
+        PS2="\[\e]133;P;k=s\a\]$PS2\[\e]133;B\a\]";;
+esac
 
 # allow root access to X11
 xhost +local:root > /dev/null 2>&1
@@ -164,12 +165,12 @@ complete -cf sudo
 
 # removes one ore more paths from $PATH
 function rmpath() {
-    local path qpath
+    local path
     for path in "$@"; do
         path="${path%/}"
-        PATH="${PATH#$path?(\/):}"
-        PATH="${PATH%:$path?(\/)}"
-        PATH="${PATH//:$path?(\/):/:}"
+        PATH="${PATH#"$path"?(/):}"
+        PATH="${PATH%:"$path"?(/)}"
+        PATH="${PATH//:"$path"?(/):/:}"
     done
 }
 
@@ -225,7 +226,10 @@ function l {
 alias ll='l -l'
 alias la='l -la'
 alias lrt='l -ls changed'
+type -P eza >/dev/null || type -P exa >/dev/null || alias lrt='ls -lrt'
 alias lart='l -las changed'
+type -P eza >/dev/null || type -P exa >/dev/null || alias lart='ls -lart'
+
 alias unrar='unrar -y -kb'
 alias jed="emacs -nw"
 alias gcal="LANG=de_DE.utf8 gcal"
@@ -255,22 +259,25 @@ function br {
 }
 
 function sendrecv {
-    local a
     local quiet
+    local finalchar
     if [ "$1" == "-q" ]; then
         shift
         quiet=true
     else
         quiet=false
     fi
+    
+    finalchar="${2-${1: -1:1}}"
+    
     #trap "stty echo; trap - SIGINT RETURN" SIGINT RETURN
     stty -echo
     echo -en "$1"
     stty echo
     sleep 0.02
-    read -srd"${2-${1: -1:1}}" a
-    $quiet && printf "%q\n" "$a${2-${1: -1:1}}"
-    __="$a"
+    read -srd"$finalchar" __
+    __="$__$finalchar"
+    $quiet || printf "%q\n" "$__"
 }
 
 function sane {
@@ -293,15 +300,22 @@ test -n "$EAT_SHELL_INTEGRATION_DIR" && source "$EAT_SHELL_INTEGRATION_DIR/bash"
 function getclip {
     if $IS_WSL || $IS_MSYS; then
         powershell.exe -command Get-Clipboard
+    elif [[ "$TERM" =~ ghossty|xterm ]] && tty >/dev/null 2>/dev/null; then
+        ( TTY="$(tty)"
+          sendrecv -q $'\e]52;c;?\e\\' <"$TTY" >"$TTY"
+          __="$(echo "${__:7: -2}" | base64 -d 2>/dev/null)"
+          echo "$__"
+        )
     else
         [ "$DISPLAY" != "" ] && xsel -b -o
     fi
 }
 
 function setclip {
-    # echo -n $"\e]52;s;$(echo "$*" | base64)\e\\"; return 0
     if $IS_WSL || $IS_MSYS; then
-        powershell.exe -command Set-Clipboard "$*"
+        powershell.exe -command Set-Clipboard "$(cat)"
+    elif [[ "$TERM" =~ ghossty|xterm ]] && tty >/dev/null 2>/dev/null; then
+         echo -n $"\e]52;s;$(echo "$*" | base64)\e\\" >"$(tty)"
     else
         [ "$DISPLAY" != "" ] && xsel -b -i
     fi &

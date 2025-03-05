@@ -1,5 +1,5 @@
 local wezterm = require('wezterm');
-local wez_mods = "SUPER|ALT";
+local wez_mods = "SUPER|CTRL";
 local act = wezterm.action;
 local firacode = "FiraCode Nerd Font Mono"
 
@@ -54,6 +54,7 @@ config = {
    check_for_updates = false,
    debug_key_events = false,
    automatically_reload_config = false,
+   enable_wayland = true,
    tiling_desktop_environments = {
       'X11 LG3D',
       'X11 bspwm',
@@ -66,7 +67,7 @@ config = {
    custom_block_glyphs = true,
    font = wezterm.font(firacode),
    dpi = nil, -- use X11 resource Xft.dpi, or default 96dpi (on linux)
-   font_size = 10.0,
+   font_size = 11.0,
    freetype_load_target = "HorizontalLcd", -- I cant see any difference to "Normal"
    freetype_render_target = "HorizontalLcd",
    font_shaper = "Harfbuzz",
@@ -187,7 +188,7 @@ config = {
 
    -- mouse bindings
    selection_word_boundary = " \t\n{}[]()\"'`",
-   bypass_mouse_reporting_modifiers = "SUPER", -- "CTRL|SHIFT",
+   bypass_mouse_reporting_modifiers = wez_modes,
    disable_default_mouse_bindings = true,
    mouse_bindings = {
       -- mouse bindings for selection of text

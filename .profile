@@ -13,6 +13,10 @@
 # | no          | no    |          |         |
 # +-------------+-------+----------+---------+
 
+# helper variable to prevent, that .profile is sourced twice or more
+[ "${PROFILEREAD}" = true ] && return
+PROFILEREAD=true
+
 # I only add my $HOME/bin to $PATH. Any paths for interactive shells
 # are added to .bashrc
 export PATH="$HOME/bin:$PATH"
@@ -73,30 +77,32 @@ export XDG_STATE_HOME="$HOME/.local/.state"
 # find out, wehter the current desktop has bright or dark appearance.
 export XDG_CURRENT_DESKTOP="${XDG_CURRENT_DESKTOP-gtk}" # use gtk as default
 
-# some GTK applications (emacs) spit out error the following error
-# messages
+# some GTK applications (emacs) spit out the following error messages
 #     WARNING **: 22:10:03.191: AT-SPI: Could not obtain desktop path or name
 #     WARNING **: 22:10:03.253: atk-bridge: GetRegisteredEvents returned message with unknown signature
 #     WARNING **: 22:10:03.253: atk-bridge: get_device_events_reply: unknown signature
 # Supposedly installing at-spi2-core should prevent those errors, but
-# it actually doesn't do so.  ATK is the gnome accessability bus, used
-# to access accessability hardware for disabled persons (think of
-# screen readers).  I don't have any of those hardware, therefore the
+# actually it doesn't.  ATK is the gnome accessability bus, used to
+# access accessability hardware for disabled persons (think of screen
+# readers).  I don't have any of those hardware, therefore the
 # connection goes into nirvana -- hence the error.  The following
 # setting prevents making such a connection.
 export NO_AT_BRIDGE=1
 
-# other variables
-export QT_QPA_PLATFORMTHEME="qt5ct"
+# theming
+
+# I do not realy understand theming in GTK, KDE, QT. GTK version 3 and
+# higher use a database managed by the dbus service. GTK version 2
+# uses resources in "~/.gtkrc-2.0".  KDE / QT application can use the
+# GTK themes with qt5ct. One must also install the "qt5ct" package and
+# use the "qt5ct" command to configure the theme.
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
+export QT_QPA_PLATFORMTHEME="qt5ct"
+
+# other variables
 export MATHEMATICA_HOME="/opt/Mathematica13.2.0"
 export MATHEMATICA_BASE="/opt/Mathematica13.2.0" # $BaseDirectory is otherwise wrongly set
-export BROWSER=vivaldi-stable
 unset BROWSER # use xdg mechanisms, instead
-
-# helper variable to prevent, that .profile is sourced twice or worse,
-# infinte recursively
-PROFILEREAD=true
 
 # If this is an interactive, login bash shell, we source .bashrc
 if [ "$BASH" != "" ]; then
