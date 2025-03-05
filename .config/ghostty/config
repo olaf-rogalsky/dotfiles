@@ -1,0 +1,128 @@
+# This is the configuration file for Ghostty.
+#
+# Ghostty ships with sensible defaults for all options. Users should
+# only need to set options that they want to change from the default.
+#
+# Run `ghostty +show-config --default --docs` to view a list of
+# all available config options and their default values.
+#
+# Additionally, each config option is also explained in detail
+# on Ghostty's website, at https://ghostty.org/docs/config.
+
+# Config syntax crash course
+# ==========================
+# # The config file consists of simple key-value pairs,
+# # separated by equals signs.
+# font-family = Iosevka
+# window-padding-x = 2
+#
+# # Spacing around the equals sign does not matter.
+# # All of these are identical:
+# key=value
+# key= value
+# key =value
+# key = value
+#
+# # Any line beginning with a # is a comment. It's not possible to put
+# # a comment after a config option, since it would be interpreted as a
+# # part of the value. For example, this will have a value of "#123abc":
+# background = #123abc
+#
+# # Empty values are used to reset config keys to default.
+# key =
+#
+# # Some config options have unique syntaxes for their value,
+# # which is explained in the docs for that config option.
+# # Just for example:
+# resize-overlay-duration = 4s 200ms
+
+# this is the default, "ghostty" terminfo is also installed
+term = xterm-ghostty
+
+# appearance
+font-family = FiraCode Nerd Font Mono
+font-size = 11
+font-feature = liga=1, clog=1, calt=1
+# no gtk titlebar, because this results in two titlebars (one from i3 and one from ghostty)
+gtk-titlebar = false
+gtk-wide-tabs = true
+gtk-custom-css = ~/.config/ghostty/ghostty.css
+window-padding-balance = true
+window-decoration = server
+
+# colors: specified as either hex (`#RRGGBB` or `RRGGBB`) or a named X11 color.
+foreground = #bbbbbb
+background = #323232
+selection-foreground = #000000 
+selection-background = #eeee99
+cursor-color = #ff0000
+cursor-text = #ffffff
+window-titlebar-foreground =
+window-titlebar-background =
+
+# olaf's color palette for indexed ANSI colors and ANSI bright colors
+palette = 0=#000000
+palette = 1=#cd0000
+palette = 2=#00cd00
+palette = 3=#cdcd00
+palette = 4=#0064cd
+palette = 5=#cd00cd
+palette = 6=#00cdcd
+palette = 7=#cdcdcd
+palette = 8=#323232
+palette = 9=#ff0000
+palette = 10=#00ff00
+palette = 11=#ffff00
+palette = 12=#007cff
+palette = 13=#ff00ff
+palette = 14=#00ffff
+palette = 15=#ffffff
+
+# remove all bindings and define my own
+keybind = clear
+keybind = shift+insert=paste_from_clipboard
+keybind = shift+page_up=scroll_page_up
+keybind = shift+page_down=scroll_page_down
+keybind = shift+home=scroll_to_top
+keybind = shift+end=scroll_to_bottom
+keybind = ctrl+super+up=jump_to_prompt:-1
+keybind = ctrl+super+down=jump_to_prompt:1
+keybind = ctrl+super+r=reload_config
+keybind = ctrl+super+enter=new_tab
+keybind = ctrl+super+kp_subtract=close_tab
+keybind = ctrl+super+plus=increase_font_size:1
+keybind = ctrl+super+minus=decrease_font_size:1
+keybind = ctrl+super+left=previous_tab
+keybind = ctrl+super+right=next_tab
+keybind = ctrl+super+one=goto_tab:1
+keybind = ctrl+super+two=goto_tab:2
+keybind = ctrl+super+three=goto_tab:3
+keybind = ctrl+super+four=goto_tab:4
+keybind = ctrl+super+five=goto_tab:5
+keybind = ctrl+super+six=goto_tab:6
+keybind = ctrl+super+seven=goto_tab:7
+keybind = ctrl+super+eight=goto_tab:8
+keybind = ctrl+super+nine=goto_tab:9
+keybind = ctrl+super+zero=goto_tab:10
+
+# behaviour
+app-notifications = no-clipboard-copy
+clipboard-paste-bracketed-safe = true
+clipboard-paste-protection = false
+clipboard-read = allow
+clipboard-write = allow
+confirm-close-surface = false
+copy-on-select = clipboard
+cursor-click-to-move = true
+focus-follows-mouse = true
+gtk-single-instance = false
+# ghotty's default is 5 lines per scroll click; 0.2 therefore scrolls line by line
+mouse-scroll-multiplier = 0.2
+mouse-shift-capture = true
+shell-integration = bash
+shell-integration-features = sudo,no-cursor,no-title
+title-report = true
+window-new-tab-position = end
+window-save-state = never
+
+

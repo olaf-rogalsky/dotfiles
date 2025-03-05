@@ -1,0 +1,16 @@
+/* there is an interactive tool for inspection of gtk widgets */
+/* GTK_DEBUG=interactive ghostty */
+
+/* font for headerbar and tabbar */
+/* headerbar is always bold: I cant't get a normal weight font */
+headerbar, tabbar {
+    font-family: "FiraCode Nerd Font Mono";
+    font-style: normal; /* itlaic / oblique */
+    font-weight: normal; /* normal / bold */
+    font-size: 11.5pt;
+}
+
+/* custom background color for the headerbar and for the selected tabbar tab */
+headerbar, tabbar tab:selected {
+    background-color: #285577;
+}
