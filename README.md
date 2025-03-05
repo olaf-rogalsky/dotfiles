@@ -1,6 +1,6 @@
 # Install steps for a new system
 
-## Clone main repository
+## clone main repository
     git clone --bare git@github.com:olaf-rogalsky/dotfiles.git "$HOME/.dotfiles"
 
 ## alias
