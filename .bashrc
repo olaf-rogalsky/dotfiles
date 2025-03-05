@@ -235,6 +235,7 @@ alias jed="emacs -nw"
 alias gcal="LANG=de_DE.utf8 gcal"
 alias feh="feh -Tdefault"
 alias icat="kitty +kitten icat"
+alias dotcfg="git --git-dir='$HOME/.dotfiles' --work-tree='$HOME'"
 
 function .. {
     cd ..
