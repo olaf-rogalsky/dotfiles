@@ -21,3 +21,12 @@ The following alias is defined in .bashrc as shorthand for woring with the bare 
     git clone --bare git@github.com:olaf-rogalsky/dotfiles.git "$HOME/.dotfiles"
     git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" checkout
     git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" --local status.showUntrackedFiles no
+
+# Update the current system from the remote github repository
+
+# fetch & merge
+    dotcfg fetsh  # optionally: dotcfg diff
+    dotcfg merge
+
+# pull
+Or do it in one ste w/o chance to check differences before merging    
