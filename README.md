@@ -29,4 +29,6 @@ The following alias is defined in .bashrc as shorthand for woring with the bare 
     dotcfg merge
 
 # pull
-Or do it in one ste w/o chance to check differences before merging    
+Or do it in one ste w/o chance to check differences before merging
+
+    dotcfg pull
