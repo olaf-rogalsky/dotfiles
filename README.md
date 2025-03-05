@@ -3,11 +3,21 @@
 ## clone main repository
     git clone --bare git@github.com:olaf-rogalsky/dotfiles.git "$HOME/.dotfiles"
 
-## alias
-    alias dotcfg="git --git-dir='$HOME/.dotfiles' --work-tree='$HOME'"
+## checkout
+If the checkout fails due to existing files either delete or backup those, first.
 
-## checkout (this might fail due to existing files: delete or backup those)
     git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" checkout
 
+
 ## don't show untracked files
+    git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" --local status.showUntrackedFiles no
+
+## alias
+The following alias is defined in .bashrc as shorthand for woring with the bare repository
+
+    alias dotcfg="git --git-dir='$HOME/.dotfiles' --work-tree='$HOME'"
+    
+## all installation commands combined (cut & paste)
+    git clone --bare git@github.com:olaf-rogalsky/dotfiles.git "$HOME/.dotfiles"
+    git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" checkout
     git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" --local status.showUntrackedFiles no
