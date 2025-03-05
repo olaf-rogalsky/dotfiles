@@ -324,7 +324,7 @@ function setclip {
 
 # using the xclipboard in the readline
 function _kill {
-    echo "${READLINE_LINE:READLINE_POINT}" | setclip
+    echo -n "${READLINE_LINE:READLINE_POINT}" | setclip
     READLINE_LINE="${READLINE_LINE:0:READLINE_POINT}"
 }
 bind -x '"\C-k": _kill'   
@@ -340,7 +340,8 @@ function _kill_region {
         ((_end = READLINE_POINT))
         ((_len = _end - _start))
     fi
-    echo "${READLINE_LINE:_start:_len}" | setclip
+    _clipboard="${READLINE_LINE:_start:_len}"
+    echo -n "$_clipboard" | setclip
     READLINE_LINE="${READLINE_LINE:0:_start}${READLINE_LINE:_end}"
     READLINE_POINT=$_start
 }
@@ -357,31 +358,49 @@ function _kill_ring_save {
         ((_end = READLINE_POINT))
         ((_len = _end - _start))
     fi
-    echo "${READLINE_LINE:_start:_len}" | xsel -i
+    _clipboard="${READLINE_LINE:_start:_len}"
+    echo -n "$_clipboard" | setclip
 }
 bind -x '"\ew": _kill_ring_save'   
 
+_word_chars="a-zA-Z0-9_"
+
 function _kill_word {
-    local _start _end _len _rest _tail _non_word _word
+    local _head _tail _new_tail _word
+    _head="${READLINE_LINE::READLINE_POINT}"
     _tail="${READLINE_LINE:READLINE_POINT}"
-    _non_word="${_tail##*([^a-zA-Z0-9_])*([a-zA-Z0-9_])}"
-    _word="${_tail:0:${#_tail} - ${#_non_word}}"
-    _len="${#_word}"
-    ((_start = READLINE_POINT))
-    ((_end = _start + _len))
-    echo "$_word" | setclip
-    READLINE_LINE="${READLINE_LINE:0:_start}${READLINE_LINE:_end}"
-    READLINE_POINT=$_start
+    _new_tail="${_tail##*([^$_word_chars])*([$_word_chars])}"
+    _word="${_tail::-${#_new_tail}}"
+    _clipboard="$_word"
+    echo -n "$_word" | setclip
+    READLINE_LINE="$_head$_new_tail"
+    READLINE_POINT=${#_head}
 }
 bind -x '"\ed": _kill_word'   
 
+function _backward_kill_word {
+    local _head _tail _new_head _word
+    _head="${READLINE_LINE::READLINE_POINT}"
+    _tail="${READLINE_LINE:READLINE_POINT}"
+    _new_head="${_head%%*([$_word_chars])*([^$_word_chars])}"
+    _word="${_head:${#_new_head}}"
+    _clipboard="$_word"
+    echo -n "$_word" | setclip
+    READLINE_LINE="$_new_head$_tail"
+    READLINE_POINT=${#_new_head}
+}
+bind -x '"\e[127;3u": _backward_kill_word'   
+
 function _yank {
+    local _head _tail _new_head
+    _head="${READLINE_LINE::READLINE_POINT}"
+    _tail="${READLINE_LINE:READLINE_POINT}"
     _clipboard="$(getclip)"
-    READLINE_LINE="${READLINE_LINE:0:READLINE_POINT}$_clipboard${READLINE_LINE:READLINE_POINT}"
-    ((READLINE_POINT+=${#_clipboard}))
+    _new_head="$_clipboard$_head"
+    READLINE_LINE="$_new_head$_tail"
+    READLINE_POINT=${#_new_head}
 }
 bind -x '"\C-y": _yank'   
-
     
 # node package manager
 if [ -d "$HOME/.config/nvm" ]; then
