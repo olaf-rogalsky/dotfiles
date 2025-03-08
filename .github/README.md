@@ -21,9 +21,8 @@ The following alias is later also defined in .bashrc
   
 ### all installation commands combined (cut & paste)
 
-    git clone --bare git@github.com:olaf-rogalsky/dotfiles.git "$HOME/.dotfiles"
+    git clone git@github.com:olaf-rogalsky/dotfiles.git "$HOME/.dotfiles"
     alias dotcfg="git --git-dir='$HOME/.dotfiles' --work-tree='$HOME'"
-    dotcfg checkout
     dotcfg config --local status.showUntrackedFiles no
 
 # pull, fetch and merge
