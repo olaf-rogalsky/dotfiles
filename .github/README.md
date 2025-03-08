@@ -1,35 +1,40 @@
 # Install steps for a new system
 
-## clone main repository
-    git clone --bare git@github.com:olaf-rogalsky/dotfiles.git "$HOME/.dotfiles"
+### clone main repository
 
-## alias
+    git clone --bare git@github.com:olaf-rogalsky/dotfiles.git "$HOME/.dotfiles"
+    git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" checkout
+
+or (equivalently?)
+
+    git clone git@github.com:olaf-rogalsky/dotfiles.git "$HOME/.dotfiles"
+
+### bash alias
 The following alias is later also defined in .bashrc
 
     alias dotcfg="git --git-dir='$HOME/.dotfiles' --work-tree='$HOME'"
     
-## checkout
-If the checkout fails due to existing files either delete or backup those, first.
+### don't show untracked files
 
-    dotcfg checkout
-
-## don't show untracked files
     dotcfg config --local status.showUntrackedFiles no
 
   
-## all installation commands combined (cut & paste)
+### all installation commands combined (cut & paste)
+
     git clone --bare git@github.com:olaf-rogalsky/dotfiles.git "$HOME/.dotfiles"
     alias dotcfg="git --git-dir='$HOME/.dotfiles' --work-tree='$HOME'"
     dotcfg checkout
     dotcfg config --local status.showUntrackedFiles no
 
-# Update the current system from the remote github repository
+# pull, fetch and merge
+Update the current system from the remote github repository.
 
-# fetch & merge
+### fetch & merge
+
     dotcfg fetsh  # optionally: dotcfg diff
     dotcfg merge
 
-# pull
+### pull
 Or do it in one step w/o chance to check differences before merging
 
     dotcfg pull
