@@ -30,7 +30,7 @@ If the checkout fails due to existing files either delete or backup those, first
     dotcfg merge
 
 # pull
-Or do it in one ste w/o chance to check differences before merging
+Or do it in one step w/o chance to check differences before merging
 
     dotcfg pull
 
@@ -43,3 +43,8 @@ Or do it in one ste w/o chance to check differences before merging
    dotcfg branch -M main # optional: main is the default nowadays
    dotcfg remote add origin git@github.com:olaf-rogalsky/dotfiles.git
    dotcfg push --set-upstream origin main
+   mkdir $HOME/.github
+   echo "description ..." >"$HOME/.github/README.md"
+   dotcfg add "$HOME/.github/README.md"
+   dotcfg commit -m "added .github/README.md"
+   
