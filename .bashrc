@@ -43,8 +43,14 @@ shopt -s checkwinsize
 shopt -s direxpand
 
 # MSYS2 / wsl related initializations
-export IS_MSYS=$(test "$OSTYPE" = "msys" && echo true || echo false)
-export IS_WSL=$(test -f "/proc/sys/fs/binfmt_misc/WSLInterop" && echo true || echo false)
+function is_msys {
+    test "$OSTYPE" = "msys"
+}
+function is_wsl {
+    test -f "/proc/sys/fs/binfmt_misc/WSLInterop"
+}
+export IS_MSYS=$(is_msys && echo true || echo false)
+export IS_WSL=$(is_wsl && echo true || echo false)
 if $IS_MSYS || $IS_WSL; then
     [ -r "$MSYSTEM_PREFIX/etc/bash.bashrc" ] && source "$MSYSTEM_PREFIX/etc/bash.bashrc"
     [ -r "$HOME/.ssh-agent-env" ] && source "$HOME/.ssh-agent-env" # make sure, that SSH_AUTH_SOCK is set for ssh-add 
