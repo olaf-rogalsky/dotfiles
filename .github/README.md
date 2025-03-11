@@ -14,10 +14,14 @@ or (equivalently?)
 
     git clone git@github.com:olaf-rogalsky/dotfiles.git "$HOME/.dotfiles"
 
-### bash alias
+### bash alias / git alias
 The following alias is later also defined in .bashrc
 
     alias dotcfg="git --git-dir='$HOME/.dotfiles' --work-tree='$HOME'"
+    
+You can also define a git alias
+
+    git config --global alias.dc '!git --git-dir="$HOME/.dotfiles" --work-tree="$HOME"'
     
 ### don't show untracked files
 
