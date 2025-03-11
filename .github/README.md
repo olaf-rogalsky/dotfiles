@@ -1,5 +1,10 @@
 # Install steps for a new system
 
+### install ssh keys to access github
+Copy .ssh/github_id_ed25519 and .ssh/github_id_ed25519.pub to the new computer and
+
+    chmod 600 .ssh/github_id_ed25519
+
 ### clone main repository
 
     git clone --bare git@github.com:olaf-rogalsky/dotfiles.git "$HOME/.dotfiles"
@@ -18,6 +23,8 @@ The following alias is later also defined in .bashrc
 
     dotcfg config --local status.showUntrackedFiles no
 
+### track remote
+    dotcfg branch --set-upstream-to origin main
   
 ### all installation commands combined (cut & paste)
 
@@ -30,7 +37,7 @@ Update the current system from the remote github repository.
 
 ### fetch & merge
 
-    dotcfg fetsh  # optionally: dotcfg diff
+    dotcfg fetch  # optionally: dotcfg diff
     dotcfg merge
 
 ### pull
