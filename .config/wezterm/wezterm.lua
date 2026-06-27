@@ -55,6 +55,7 @@ config = {
    debug_key_events = false,
    automatically_reload_config = false,
    enable_wayland = true,
+   enable_kitty_keyboard = true,
    tiling_desktop_environments = {
       'X11 LG3D',
       'X11 bspwm',
@@ -115,6 +116,12 @@ config = {
    swap_backspace_and_delete = false,
    show_tab_index_in_tab_bar = true,
 
+
+   -- ssh behaviour: don't use wezterm ssh
+   mux_enable_ssh_agent = false, -- no agent
+   ssh_domains = {},
+   
+   -- domains
    unix_domains = {
       {
          name = "unix",
@@ -128,11 +135,13 @@ config = {
       {key = "Insert", mods = "SHIFT", action = act{PasteFrom = "Clipboard"}},
       {key = "PageUp", mods = "SHIFT", action = act{ScrollByPage = -1}},
       {key = "PageDown", mods = "SHIFT", action = act{ScrollByPage = 1}},
+      {key = "Home", mods = wez_mods, action = act.ClearScrollback 'ScrollbackAndViewport'},
       -- wezterm specific shortcuts
       {key = "d", mods = wez_mods, action = "ShowDebugOverlay"},
       {key = "n", mods = wez_mods, action = act.SpawnTab("DefaultDomain")},
       {key = "r", mods = wez_mods, action = "ReloadConfiguration"},
       {key = "Return", mods = wez_mods, action = act{SpawnTab = "CurrentPaneDomain"}},
+      {key = "q", mods = wez_mods, action = act{CloseCurrentTab = {confirm = false}}},
       {key = "KeypadSubtract", mods = wez_mods, action = act{CloseCurrentTab = {confirm = false}}},
       {key = "+", mods = wez_mods, action = "IncreaseFontSize"},
       {key = "-", mods = wez_mods, action = "DecreaseFontSize"},

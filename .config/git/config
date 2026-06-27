@@ -13,6 +13,7 @@
         st = status
         ss = stash show
         sl = stash list
+        dc = !git --git-dir=\"$HOME/.dotfiles\" --work-tree=\"$HOME\"
 
 [core]
 	excludesfile = /home/olaf/.gitignore_global
@@ -32,3 +33,7 @@
 
 [credential "https://gist.github.com"]
 	helper = !/usr/bin/gh auth git-credential
+[http]
+	lowSpeedLimit = 0
+	lowSpeedTime = 999999
+	version = HTTP/1.1

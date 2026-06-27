@@ -116,8 +116,8 @@ copy-on-select = clipboard
 cursor-click-to-move = true
 focus-follows-mouse = true
 gtk-single-instance = false
-# ghotty's default is 5 lines per scroll click; 0.2 therefore scrolls line by line
-mouse-scroll-multiplier = 0.2
+# ghotty's default is 5 lines per scroll click; 0.2 therefore scrolls line by line: something seem
+mouse-scroll-multiplier = 3
 mouse-shift-capture = true
 shell-integration = bash
 shell-integration-features = sudo,no-cursor,no-title
